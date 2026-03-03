@@ -10,7 +10,7 @@ import {
   Share2,
   Sofa,
 } from "lucide-react";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
 import dynamic from "next/dynamic";
@@ -67,7 +67,7 @@ const PanoramaViewer = dynamic(() => import("@/components/PanoramaViewer"), {
 let uidCounter = 0;
 function nextUid() { return `item-${++uidCounter}`; }
 
-export default function EditorPage() {
+function EditorPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const projectId = searchParams.get("id");
@@ -78,14 +78,13 @@ export default function EditorPage() {
   const [projectName, setProjectName] = useState("Untitled Project");
   const [eventType, setEventType] = useState("Wedding");
   const [sceneIndex, setSceneIndex] = useState(0);
-    const [furniturePanelOpen, setFurniturePanelOpen] = useState(false);
-    const [isSaving, setIsSaving] = useState(false);
-    const [isExporting, setIsExporting] = useState(false);
-    const [isExportingPdf, setIsExportingPdf] = useState(false);
-    const [isSharing, setIsSharing] = useState(false);
-  
-    const [placedItemsMap, setPlacedItemsMap] = useState<Record<string, PlacedItem[]>>({});
+  const [furniturePanelOpen, setFurniturePanelOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const [isExportingPdf, setIsExportingPdf] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
 
+  const [placedItemsMap, setPlacedItemsMap] = useState<Record<string, PlacedItem[]>>({});
 
   const sceneKey = `${eventType}::${sceneIndex}`;
   const placedItems: PlacedItem[] = placedItemsMap[sceneKey] ?? [];
@@ -97,23 +96,23 @@ export default function EditorPage() {
     [sceneKey]
   );
 
-    const handleExportPdf = useCallback(async () => {
+  const handleExportPdf = useCallback(async () => {
     setIsExportingPdf(true);
     try {
       const scenesData = (EVENT_SCENES[eventType] || []).map((scene, idx) => ({
         ...scene,
-        items: (placedItemsMap[`${eventType}::${idx}`] || []).map(p => ({
+        items: (placedItemsMap[`${eventType}::${idx}`] || []).map((p) => ({
           ...p,
           item: {
             ...p.item,
             // Ensure price is present even for older saved items or custom items
-            price: p.item.price || FURNITURE_ITEMS.find(fi => fi.id === p.item.id)?.price || 0
-          }
-        }))
+            price: p.item.price || FURNITURE_ITEMS.find((fi) => fi.id === p.item.id)?.price || 0,
+          },
+        })),
       }));
-      
-      const project = projects.find(p => p._id === projectId);
-      
+
+      const project = projects.find((p) => p._id === projectId);
+
       await exportProjectToPdf({
         projectId: projectId || "unknown",
         projectName,
@@ -128,7 +127,6 @@ export default function EditorPage() {
       setIsExportingPdf(false);
     }
   }, [eventType, placedItemsMap, projectName, projectId, projects, user]);
-
 
   const handleAddFurniture = useCallback(
     (item: FurnitureItem) => {
@@ -145,7 +143,10 @@ export default function EditorPage() {
         const sx = rect.width * 0.45;
         const sy = rect.height * 0.5;
         const world = view.screenToCoordinates({ x: sx, y: sy });
-        if (world) { yaw = world.yaw; pitch = world.pitch; }
+        if (world) {
+          yaw = world.yaw;
+          pitch = world.pitch;
+        }
       }
 
       const newItem: PlacedItem = {
@@ -185,7 +186,7 @@ export default function EditorPage() {
     }
   }, [projectId, token, placedItemsMap]);
 
-    const handleExportStandalone = useCallback(async () => {
+  const handleExportStandalone = useCallback(async () => {
     setIsExporting(true);
     try {
       const currentScene = EVENT_SCENES[eventType][sceneIndex];
@@ -196,8 +197,8 @@ export default function EditorPage() {
         try {
           // If it's already a base64 or blob, return it
           if (url.startsWith("data:") || url.startsWith("blob:")) return url;
-          
-          const res = await fetch(url, { mode: 'cors' });
+
+          const res = await fetch(url, { mode: "cors" });
           if (!res.ok) throw new Error(`Status ${res.status}`);
           const blob = await res.blob();
           return new Promise<string>((resolve, reject) => {
@@ -432,34 +433,33 @@ export default function EditorPage() {
         </div>
 
         <div className="flex items-center gap-2">
-            <button
-              onClick={handleSaveDraft}
-              disabled={isSaving}
-              className="px-4 py-2 bg-white/80 hover:bg-white text-zinc-600 rounded-xl text-sm font-medium border border-white/40 shadow-sm transition-all flex items-center gap-2 disabled:opacity-50"
-            >
-              <Save className={`w-4 h-4 ${isSaving ? "animate-spin" : ""}`} />
-              {isSaving ? "Saving..." : "Save Draft"}
-            </button>
-              <button
-                onClick={handleExportPdf}
-                disabled={isExportingPdf}
-                className="px-4 py-2 bg-white/80 hover:bg-white text-zinc-600 rounded-xl text-sm font-medium border border-white/40 shadow-sm transition-all flex items-center gap-2 disabled:opacity-50"
-              >
-                <FileText className={`w-4 h-4 ${isExportingPdf ? "animate-spin" : ""}`} />
-                {isExportingPdf ? "Generating PDF..." : "Export PDF"}
-              </button>
-              <button
-                onClick={handleShare}
-                className={`btn-primary !px-4 !py-2 text-sm flex items-center gap-2 transition-all ${
-                  isSharing ? "!bg-green-500 !hover:bg-green-600" : ""
-                }`}
-              >
-                <Share2 className={`w-4 h-4 ${isSharing ? "scale-110" : ""}`} />
-                {isSharing ? "Link Copied!" : "Share Link"}
-              </button>
-            </div>
-          </div>
-
+          <button
+            onClick={handleSaveDraft}
+            disabled={isSaving}
+            className="px-4 py-2 bg-white/80 hover:bg-white text-zinc-600 rounded-xl text-sm font-medium border border-white/40 shadow-sm transition-all flex items-center gap-2 disabled:opacity-50"
+          >
+            <Save className={`w-4 h-4 ${isSaving ? "animate-spin" : ""}`} />
+            {isSaving ? "Saving..." : "Save Draft"}
+          </button>
+          <button
+            onClick={handleExportPdf}
+            disabled={isExportingPdf}
+            className="px-4 py-2 bg-white/80 hover:bg-white text-zinc-600 rounded-xl text-sm font-medium border border-white/40 shadow-sm transition-all flex items-center gap-2 disabled:opacity-50"
+          >
+            <FileText className={`w-4 h-4 ${isExportingPdf ? "animate-spin" : ""}`} />
+            {isExportingPdf ? "Generating PDF..." : "Export PDF"}
+          </button>
+          <button
+            onClick={handleShare}
+            className={`btn-primary !px-4 !py-2 text-sm flex items-center gap-2 transition-all ${
+              isSharing ? "!bg-green-500 !hover:bg-green-600" : ""
+            }`}
+          >
+            <Share2 className={`w-4 h-4 ${isSharing ? "scale-110" : ""}`} />
+            {isSharing ? "Link Copied!" : "Share Link"}
+          </button>
+        </div>
+      </div>
 
       {/* Main Canvas */}
       <div className="flex-1 relative mx-6 mb-6 rounded-3xl overflow-hidden shadow-inner">
@@ -469,11 +469,7 @@ export default function EditorPage() {
         </div>
 
         {/* World-space furniture overlay */}
-        <SceneOverlay
-          placedItems={placedItems}
-          onChange={setPlacedItems}
-          viewerRef={panoramaRef}
-        />
+        <SceneOverlay placedItems={placedItems} onChange={setPlacedItems} viewerRef={panoramaRef} />
 
         {/* 360° badge */}
         <div className="absolute top-4 left-4 z-20 pointer-events-none">
@@ -491,9 +487,7 @@ export default function EditorPage() {
             onClick={() => setFurniturePanelOpen((v) => !v)}
             className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-sm font-semibold shadow-lg transition-all"
             style={{
-              background: furniturePanelOpen
-                ? "rgba(255,107,74,0.92)"
-                : "rgba(255,255,255,0.18)",
+              background: furniturePanelOpen ? "rgba(255,107,74,0.92)" : "rgba(255,255,255,0.18)",
               backdropFilter: "blur(14px)",
               WebkitBackdropFilter: "blur(14px)",
               border: furniturePanelOpen
@@ -503,7 +497,7 @@ export default function EditorPage() {
             }}
           >
             <Sofa className="w-4 h-4" />
-            Furniture Panel
+          Furniture Panel
           </motion.button>
         </div>
 
@@ -546,7 +540,11 @@ export default function EditorPage() {
                   <span className="text-[10px] font-bold uppercase tracking-wider whitespace-nowrap">
                     {i === sceneIndex ? scene.label : `Scene ${i + 1}`}
                   </span>
-                  <span className={`w-1.5 h-1.5 rounded-full transition-colors ${i === sceneIndex ? "bg-coral-400" : "bg-zinc-200"}`} />
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                      i === sceneIndex ? "bg-coral-400" : "bg-zinc-200"
+                    }`}
+                  />
                 </button>
               ))}
             </div>
@@ -577,6 +575,14 @@ export default function EditorPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function EditorPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <EditorPageInner />
+    </Suspense>
   );
 }
 
