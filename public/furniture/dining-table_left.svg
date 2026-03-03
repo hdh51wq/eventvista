@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 140" fill="none">
+  <!-- Tablecloth drape shadow -->
+  <ellipse cx="80" cy="134" rx="68" ry="8" fill="#00000015"/>
+  <!-- Table legs (hidden under cloth, just tips visible) -->
+  <rect x="28" y="112" width="8" height="22" rx="3" fill="#5C3D1E" opacity="0.4"/>
+  <rect x="124" y="112" width="8" height="22" rx="3" fill="#5C3D1E" opacity="0.4"/>
+  <!-- Tablecloth drop front -->
+  <path d="M10 72 Q8 130 28 134 Q80 140 132 134 Q152 130 150 72 Z" fill="#F0F0F0"/>
+  <path d="M10 72 Q8 130 28 134 Q80 140 132 134 Q152 130 150 72 Z" fill="url(#clothgrad)"/>
+  <defs>
+    <linearGradient id="clothgrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FAFAFA"/>
+      <stop offset="100%" stop-color="#E0E0E0"/>
+    </linearGradient>
+  </defs>
+  <!-- Cloth fold lines -->
+  <path d="M40 74 Q38 118 36 130" stroke="#CCCCCC" stroke-width="1" fill="none"/>
+  <path d="M80 74 Q80 122 80 134" stroke="#CCCCCC" stroke-width="1" fill="none"/>
+  <path d="M120 74 Q122 118 124 130" stroke="#CCCCCC" stroke-width="1" fill="none"/>
+  <!-- Tabletop surface -->
+  <rect x="8" y="52" width="144" height="24" rx="6" fill="#F8F8F8"/>
+  <!-- Top surface cloth -->
+  <rect x="8" y="36" width="144" height="20" rx="6" fill="white"/>
+  <!-- Lace trim -->
+  <path d="M8 72 Q20 78 32 72 Q44 66 56 72 Q68 78 80 72 Q92 66 104 72 Q116 78 128 72 Q140 66 152 72" stroke="#DDDDDD" stroke-width="2.5" fill="none"/>
+  <!-- Centerpiece: candles -->
+  <rect x="68" y="20" width="8" height="20" rx="2" fill="#FFF9E8"/>
+  <rect x="84" y="24" width="8" height="14" rx="2" fill="#FFF9E8"/>
+  <ellipse cx="72" cy="20" rx="4" ry="2" fill="#FFEECC"/>
+  <ellipse cx="88" cy="24" rx="4" ry="2" fill="#FFEECC"/>
+  <!-- Flames -->
+  <ellipse cx="72" cy="17" rx="2" ry="3" fill="#FFA030" opacity="0.9"/>
+  <ellipse cx="88" cy="21" rx="2" ry="3" fill="#FFA030" opacity="0.9"/>
+  <!-- Plates on table -->
+  <ellipse cx="44" cy="48" rx="14" ry="6" fill="#E8E8E8"/>
+  <ellipse cx="44" cy="47" rx="10" ry="5" fill="#FAFAFA"/>
+  <ellipse cx="116" cy="48" rx="14" ry="6" fill="#E8E8E8"/>
+  <ellipse cx="116" cy="47" rx="10" ry="5" fill="#FAFAFA"/>
+<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="20" fill="blue">LEFT</text></svg>

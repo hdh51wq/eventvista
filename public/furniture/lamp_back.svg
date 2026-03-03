@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 200" fill="none">
+  <!-- Base disc -->
+  <ellipse cx="40" cy="182" rx="28" ry="10" fill="#4A4A4A"/>
+  <ellipse cx="40" cy="180" rx="26" ry="9" fill="#5A5A5A"/>
+  <!-- Pole -->
+  <rect x="37" y="80" width="6" height="104" rx="3" fill="#6A6A6A"/>
+  <!-- Shade outer -->
+  <ellipse cx="40" cy="72" rx="34" ry="10" fill="#D4B896" opacity="0.4"/>
+  <path d="M6 72 L16 14 L64 14 L74 72 Z" fill="#F0D8B0"/>
+  <!-- Shade inner shadow -->
+  <path d="M10 72 L19 18 L61 18 L70 72 Z" fill="#E8CC9A" opacity="0.5"/>
+  <!-- Shade rim top -->
+  <ellipse cx="40" cy="14" rx="24" ry="6" fill="#D4B896"/>
+  <!-- Shade rim bottom -->
+  <ellipse cx="40" cy="72" rx="34" ry="9" fill="#C8A87C"/>
+  <!-- Shade top hole -->
+  <ellipse cx="40" cy="14" rx="10" ry="3" fill="#B8986A" opacity="0.6"/>
+  <!-- Light glow -->
+  <ellipse cx="40" cy="72" rx="28" ry="6" fill="#FFFDE0" opacity="0.25"/>
+  <!-- Pole-shade connector -->
+  <rect x="38" y="68" width="4" height="16" rx="2" fill="#888"/>
+<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="20" fill="red">BACK</text></svg>

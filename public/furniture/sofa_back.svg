@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 130" fill="none">
+  <!-- Legs -->
+  <rect x="12" y="96" width="10" height="30" rx="4" fill="#5C3D1E"/>
+  <rect x="198" y="96" width="10" height="30" rx="4" fill="#5C3D1E"/>
+  <rect x="42" y="100" width="10" height="26" rx="4" fill="#7A5230"/>
+  <rect x="168" y="100" width="10" height="26" rx="4" fill="#7A5230"/>
+  <!-- Seat base -->
+  <rect x="8" y="78" width="204" height="24" rx="8" fill="#B07244"/>
+  <!-- Seat cushion -->
+  <rect x="14" y="64" width="192" height="22" rx="8" fill="#D4956A"/>
+  <rect x="14" y="64" width="192" height="10" rx="6" fill="#E0AA80"/>
+  <!-- Left armrest -->
+  <rect x="8" y="38" width="18" height="50" rx="6" fill="#C8855A"/>
+  <rect x="6" y="34" width="22" height="10" rx="5" fill="#D4956A"/>
+  <!-- Right armrest -->
+  <rect x="194" y="38" width="18" height="50" rx="6" fill="#C8855A"/>
+  <rect x="192" y="34" width="22" height="10" rx="5" fill="#D4956A"/>
+  <!-- Back cushion -->
+  <rect x="30" y="10" width="160" height="58" rx="8" fill="#D4956A"/>
+  <rect x="30" y="10" width="160" height="14" rx="6" fill="#E0AA80"/>
+  <!-- Back cushion seams -->
+  <line x1="110" y1="14" x2="110" y2="66" stroke="#C07850" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="30" y1="40" x2="190" y2="40" stroke="#C07850" stroke-width="1.5" stroke-dasharray="4 3"/>
+<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="20" fill="red">BACK</text></svg>
